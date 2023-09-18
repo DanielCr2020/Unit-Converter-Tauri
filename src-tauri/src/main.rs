@@ -9,7 +9,6 @@ fn greet(name: &str) -> String {
 
 #[tauri::command]
 fn convert(number: f64) -> f64{
-    format!("hi {}", number*2.0);
     return number*2.0;
 }
 
