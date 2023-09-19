@@ -21,7 +21,6 @@
   /* padding: 4vh; */
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
   text-align: center;
 }
 
@@ -34,6 +33,12 @@
   padding: 12px;
   background-color: black
 }
+
+/* .conversion-div { */
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* justify-content: space-evenly; */
+/* } */
 
 .applet {
   display: flex;
@@ -84,10 +89,6 @@ button:active {
 input,
 button {
   outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
 }
 
 @media (prefers-color-scheme: dark) {

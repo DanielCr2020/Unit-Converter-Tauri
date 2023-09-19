@@ -6,10 +6,11 @@ const UnitDropDowns = (props:any) => {
     // const [outputValue, setOutputValue] = useState(0.0)
 
     // const handleChange = (e:any) => {
+    //     console.log(e.target)
     //     invokeConvert(Number.parseFloat(e.target.value))
     // }
     // async function invokeConvert(numValue:number) {
-    //     setOutputValue(await invoke("convert",{ number:numValue }));
+    //     setOutputValue(await invoke("convert",{ number:numValue, convert_from:props.convertFrom, convert_to:props.convertTo }));
     // }
 
     let selectFrom: HTMLElement | null = document.getElementById("convert-from")
@@ -27,13 +28,12 @@ const UnitDropDowns = (props:any) => {
 
     return (
         <div>
-            Convert from
+            Convert from &nbsp;
             <select id="convert-from" className="drop-down">
             </select>
-            to
+            &nbsp; to &nbsp;
             <select id="convert-to" className="drop-down">
             </select>
-            {/* <h2>{outputValue}</h2> */}
         </div>
     )
 }
