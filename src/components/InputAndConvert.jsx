@@ -1,15 +1,15 @@
 //This component has the input text box and the ouput text result. It imvokes the backend rust function
 import '../App.css';
-import { useState } from 'react';
+import { createSignal } from 'solid-js';
 import { invoke } from "@tauri-apps/api/tauri";
 
-const InputAndConvert = (props:any) => {
-    const [outputValue, setOutputValue] = useState(0.0)
+const InputAndConvert = (props) => {
+    const [outputValue, setOutputValue] = createSignal(0.0)
 
-    const handleChange = (e:any) => {
+    const handleChange = (e) => {
         invokeConvert(Number.parseFloat(e.target.value))
     }
-    async function invokeConvert(numValue:number) {
+    async function invokeConvert(numValue) {
         setOutputValue(await invoke("convert",{ 
             number:numValue, 
             convertFrom:props.convertFrom, 
@@ -27,10 +27,10 @@ const InputAndConvert = (props:any) => {
                 type='text'
                 autoComplete='off'
                 placeholder="Enter a number..."
-                onChange={handleChange}
+                onInput={handleChange}
             />  
             {/* move the output value text so that the saved data dropdown doesn't cover it */}
-            <h2>{outputValue}</h2>
+            <h2>{outputValue()}</h2>
         </div>
     )
 }
