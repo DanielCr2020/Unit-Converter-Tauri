@@ -37,7 +37,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Unit Converter",
+        "title": "unit-converter",
         "width": 800,
         "height": 600
       }
