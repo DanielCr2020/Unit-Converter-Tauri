@@ -41,6 +41,52 @@ fn convert_volume(number: f64, from: &str, to: &str) -> f64 {
     return number*multiplier;
 }
 
+fn convert_temperature(number: f64, from: &str, to: &str) -> f64 {
+    if from=="Fahrenheit" {
+        if to == "Celsius" {
+            return (number-32.0) * 5.0/9.0
+        }
+        if to == "Kelvin" {
+            return 273.0 + (number-32.0) * 5.0/9.0
+        }
+        if to == "Fahrenheit" {
+            return number
+        }
+        else {
+            return 0.0
+        }
+    }
+    else if from=="Celsius" {
+        if to == "Fahrenheit" {
+            return 32.0 + (9.0/5.0 * number)
+        }
+        if to == "Kelvin" {
+            return 273.0 + number
+        }
+        if to == "Celsius" {
+            return number
+        }
+        else {
+            return 0.0
+        }
+    }
+    else if from=="Kelvin" {
+        if to=="Kelvin"{
+            return number
+        }
+        if to=="Celsius" {
+            return number - 273.0
+        }
+        if to=="Fahrenheit" {
+            return (number-32.0) * 5.0/9.0
+        }
+        else {
+            return 0.0
+        }
+    }
+    return 0.0
+}
+
 #[tauri::command]
 fn convert(number: f64, convert_from: &str, convert_to: &str, convert_unit: &str) -> f64 {
     //convert every input to some base unit. Then convert that to the output unit
@@ -49,6 +95,9 @@ fn convert(number: f64, convert_from: &str, convert_to: &str, convert_unit: &str
     }
     else if convert_unit=="Volume" {
         return convert_volume(number, convert_from, convert_to)
+    }
+    else if convert_unit=="Temperature"{
+        return convert_temperature(number, convert_from, convert_to)
     }
 
     return 0.0;

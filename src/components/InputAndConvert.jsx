@@ -29,7 +29,6 @@ const InputAndConvert = (props) => {
                 placeholder="Enter a number..."
                 onInput={handleChange}
             />  
-            {/* move the output value text so that the saved data dropdown doesn't cover it */}
             <h2>{outputValue()}</h2>
         </div>
     )
