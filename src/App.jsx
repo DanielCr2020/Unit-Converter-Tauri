@@ -41,6 +41,7 @@ function App() {
                 setConvertFrom(e.target.value);
               }}>
               <option value="Select a unit type">&lt;Select unit type&gt;</option>
+              {/* Populate the dropdown menus */}
               {unitBases()[0] && unitBases().map((unit) => <option key={unit} value={unit}>{unit}</option>)}
             </select>
             &nbsp; to &nbsp;
