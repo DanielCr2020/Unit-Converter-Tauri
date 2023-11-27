@@ -1,10 +1,39 @@
-# Tauri + Solid
+# Tauri Unit Converter
 
-This template should help get you started developing with Tauri and Solid in Vite.
+## About
 
-## Recommended IDE Setup
+This is a unit converter desktop application made with Tauri. It uses a rust backend with a SolidJS frontend.
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+Tauri is a toolkit used to build cross-platform desktop applications. It is a similar idea to Electron, but replaces the NodeJS backend with rust, and the chromium frontend with WebView.
 
-The executable binary can be found in the releases window of this github repository
-[Build instructions](https://tauri.app/v1/guides/building/)
+Learn more about Tauri [here](https://tauri.app)
+
+## Usage
+
+When starting the app, select a unit type from the sidebar. Then, select a unit to convert to and from in the dropdown menus. Type the value into the textbox, and it will be converted on the fly and printed below the textbox. If you change one of the dropdowns, you will need to change the text in the textbox to get the number to update.
+
+### Building
+
+#### General
+
+The windows executable binary can be found in the releases window of this github repository.
+
+You will likely have to install some things for building to work.
+
+Build instructions will vary per platform
+
+[Here](https://tauri.app/v1/guides/building/) is the official documentation on building
+
+You will need to install the packages before you can build. I use npm, so I run `npm install`
+
+##### Development mode
+
+To run the app in development mode, use `npm run tauri dev` OR `yarn tauri dev` OR `pnpm tauri dev` OR `cargo tauri dev`
+
+Running it in development mode also allows you to open up the browser console. (This is where `console.log()` messages will appear).
+
+##### Windows/MacOS/Linux
+
+`npm run tauri build` OR `yarn tauri build` OR `pnpm tauri build` OR `cargo tauri build`
+
+The executable is in `src-tauri/target/release` (at least for Windows).
