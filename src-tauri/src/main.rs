@@ -8,18 +8,20 @@
 // }
 
 fn convert_distance(number: f64, from: &str, to: &str) -> f64 {
-    let mut multiplier: f64 = match from {      //x to feet
-        "feet" => 1.0,  //base unit (probably)
-        "inches" => 1.0/12.0,
-        "miles" => 5280.0,
-        "meters" => 12.0/3.375,
+    let mut multiplier: f64 = match from {      //x to meters       one of input unit (LHS) is X many meters
+        "meters" => 1.0,                //   (input unit) -> meters         meters -> meters = 1
+        "centimeters" => 0.01,             
+        "feet" => 0.3048,          
+        "inches" => 0.0254,           
+        "miles" => 1609.34,              
         _ => 0.0
     };
-    multiplier *= match to {            //feet to y
-        "feet" => 1.0,
-        "inches" => 12.0,
-        "miles" => 1.0/5280.0,
-        "meters" => 3.375/12.0,
+    multiplier *= match to {            //meters to y
+        "meters" => 1.0,
+        "centimeters" => 100.0,          
+        "feet" => 1.0/0.3048,
+        "inches" => 1.0/0.0254,
+        "miles" => 1.0/1609.34,
         _ => 0.0
     };
     return number*multiplier;
@@ -89,6 +91,9 @@ fn convert_temperature(number: f64, from: &str, to: &str) -> f64 {
 
 #[tauri::command]
 fn convert(number: f64, convert_from: &str, convert_to: &str, convert_unit: &str) -> f64 {
+    if convert_from==convert_to {       //if the units are the same, no need to convert
+        return number;
+    }
     //convert every input to some base unit. Then convert that to the output unit
     if convert_unit=="Distance" {
         return convert_distance(number, convert_from, convert_to)
