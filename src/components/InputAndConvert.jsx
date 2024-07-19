@@ -9,13 +9,21 @@ const InputAndConvert = (props) => {
     const handleChange = (e) => {
         invokeConvert(Number.parseFloat(e.target.value))
     }
-    async function invokeConvert(numValue) {
-        setOutputValue(await invoke("convert",{ 
+    function invokeConvert(numValue) {
+        let conversion_rust=invoke("convert",{ 
             number:numValue, 
             convertFrom:props.convertFrom, 
             convertTo:props.convertTo, 
             convertUnit:props.convertUnit 
-        }));
+        })
+        .then((conversion_result) => setOutputValue(conversion_result))
+        .catch((e) => setOutputValue(e))
+        // setOutputValue(invoke("convert",{ 
+        //     number:numValue, 
+        //     convertFrom:props.convertFrom, 
+        //     convertTo:props.convertTo, 
+        //     convertUnit:props.convertUnit 
+        // }));
     }
 
     return (

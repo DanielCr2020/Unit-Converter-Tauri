@@ -3088,6 +3088,7 @@ checksum = "1dd624098567895118886609431a7c3b8f516e41d30e0643f03d94592a147e36"
 name = "unit-converter"
 version = "0.0.0"
 dependencies = [
+ "lazy_static",
  "serde",
  "serde_json",
  "tauri",

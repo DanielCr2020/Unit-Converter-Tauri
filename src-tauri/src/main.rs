@@ -7,24 +7,72 @@
 //     format!("Hello, {}! You've been greated from Rust!", name)
 // }
 
+use lazy_static::lazy_static;
+use std::collections::HashMap;
+
+lazy_static! {
+    static ref DISTANCE_CONVERSIONS: HashMap<&'static str, HashMap<&'static str, f64>> = {
+        let mut inches_to_other=HashMap::new();
+        inches_to_other.insert("inches", 1.0);
+        inches_to_other.insert("feet", 1.0/12.0);
+        inches_to_other.insert("miles", 1.0/63360.0);
+        inches_to_other.insert("meters", 0.00254);
+        inches_to_other.insert("centimeters", 2.54);
+
+        let mut feet_to_other=HashMap::new();
+        feet_to_other.insert("inches", 12.0);
+        feet_to_other.insert("feet", 1.0);
+        feet_to_other.insert("miles", 1.0/5280.0);
+        feet_to_other.insert("meters", 0.3048);
+        feet_to_other.insert("centimeters", 30.48);
+
+        let mut miles_to_other=HashMap::new();
+        miles_to_other.insert("inches", 63360.0);
+        miles_to_other.insert("feet", 5280.0);
+        miles_to_other.insert("miles", 1.0);
+        miles_to_other.insert("meters", 1609.344);
+        miles_to_other.insert("centimeters", 160934.4);
+
+        let mut meters_to_other=HashMap::new();
+        meters_to_other.insert("inches", 39.37008);
+        meters_to_other.insert("feet", 3.28084);
+        meters_to_other.insert("miles", 1.0/1609.344);
+        meters_to_other.insert("meters", 1.0);
+        meters_to_other.insert("centimeters", 100.0);
+
+        let mut centimeters_to_other=HashMap::new();
+        centimeters_to_other.insert("inches", 0.3937008);
+        centimeters_to_other.insert("feet", 0.0328084);
+        centimeters_to_other.insert("miles", 1.0/160934.4);
+        centimeters_to_other.insert("meters", 0.01);
+        centimeters_to_other.insert("centimeters", 1.0);
+
+
+        let mut conversions=HashMap::new();
+        conversions.insert("feet",feet_to_other);
+        conversions.insert("inches",inches_to_other);
+        conversions.insert("miles",miles_to_other);
+        conversions.insert("meters",meters_to_other);
+        conversions.insert("centimeters",centimeters_to_other);
+
+        conversions
+    };
+    
+}
+
 fn convert_distance(number: f64, from: &str, to: &str) -> f64 {
-    let mut multiplier: f64 = match from {      //x to meters       one of input unit (LHS) is X many meters
-        "meters" => 1.0,                //   (input unit) -> meters         meters -> meters = 1
-        "centimeters" => 0.01,             
-        "feet" => 0.3048,          
-        "inches" => 0.0254,           
-        "miles" => 1609.34,              
-        _ => 0.0
+    let from_ref_opt: Option<&HashMap<&str, f64>>=DISTANCE_CONVERSIONS.get(from);
+    let from_ref=match from_ref_opt {
+        Some(map) => map,
+        None => return 0.0,
     };
-    multiplier *= match to {            //meters to y
-        "meters" => 1.0,
-        "centimeters" => 100.0,          
-        "feet" => 1.0/0.3048,
-        "inches" => 1.0/0.0254,
-        "miles" => 1.0/1609.34,
-        _ => 0.0
+    let to_ref_opt=from_ref.get(to);
+    let to_ref=match to_ref_opt {
+        Some(value) => value,
+        None => return 0.0,
     };
-    return number*multiplier;
+    
+    return number*to_ref;
 }
 
 fn convert_volume(number: f64, from: &str, to: &str) -> f64 {
@@ -92,7 +140,7 @@ fn convert_temperature(number: f64, from: &str, to: &str) -> f64 {
 #[tauri::command]
 fn convert(number: f64, convert_from: &str, convert_to: &str, convert_unit: &str) -> f64 {
     if convert_from==convert_to {       //if the units are the same, no need to convert
-        return number;
+        return number
     }
     //convert every input to some base unit. Then convert that to the output unit
     if convert_unit=="Distance" {
