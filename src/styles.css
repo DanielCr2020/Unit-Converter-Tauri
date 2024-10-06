@@ -85,6 +85,13 @@ button {
   cursor: pointer;
 }
 
+button.narrow-button {
+  width: 80px;
+  text-align: left;
+  align-items: center;
+  justify-items: center;
+}
+
 button:hover {
   border-color: #396cd8;
 }

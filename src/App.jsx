@@ -9,8 +9,7 @@ import "./App.css";
 function App() {
   const [convertUnit, setConvertUnit] = createSignal("Distance");   //is it distance, volume, area, etc?
   const [unitBases, setUnitBases] = createSignal([""]);
-  const [convertFrom, setConvertFrom] = createSignal('')
-  const [convertTo, setConvertTo] = createSignal('')
+
   const [inputValue, setInputValue] = createSignal(0.0)
   const [outputValue, setOutputValue] = createSignal(0.0)
 
@@ -22,8 +21,16 @@ function App() {
   setConvertUnit("Distance")
   setUnitBases(distanceUnitBases)
 
+  const [convertFrom, setConvertFrom] = createSignal('')
+  const [convertTo, setConvertTo] = createSignal('')
+
   const handleChange = () => {   //handles input box or unit dropdown change - runs every time one of those changes
-      invokeConvert(Number.parseFloat(inputValue()))
+    
+    let num=Number.parseFloat(inputValue())
+    if(isNaN(num)){
+      num=0;
+    }
+    invokeConvert(num);
   }
   async function invokeConvert(numValue) {
       setOutputValue(await invoke("convert",{ 
@@ -47,35 +54,56 @@ function App() {
       <div className="applet">
         
         <h1>{convertUnit()} Converter </h1>
-        {/* unitBases[0] will be undefined if it isn't set yet. This way, no blank option will show up */}
         <div>
-            &nbsp;Convert from &nbsp;
-            <select id="convert-from" className="drop-down" onChange={(e) => {
-                setConvertFrom(e.target.value);
+          &nbsp;Convert from &nbsp;
+            <select id="convert-from" className="drop-down" value={convertFrom()} onChange={(e) => {
+                setConvertFrom(e.currentTarget.value);
                 handleChange()
               }}>
-              <option value="Select a unit type">&lt;Select unit type&gt;</option>
               {/* Populate the dropdown menus */}
-              {unitBases()[0] && unitBases().map((unit) => <option key={unit} value={unit}>{unit}</option>)}
+                <For each={unitBases()}>
+                  {(unit, index) => {
+                      return <option value={unit}>{unit}</option>
+                    }
+                  }
+                </For>
             </select>
             &nbsp; to &nbsp;
-            <select id="convert-to" className="drop-down" onChange={(e) => {
-                setConvertTo(e.target.value);
+            <select id="convert-to" className="drop-down" value={convertTo()} onChange={(e) => {
+                setConvertTo(e.currentTarget.value);
                 handleChange()
               }}>
-              <option value="Select a unit type">&lt;Select unit type&gt;</option>
-              {unitBases()[0] && unitBases().map((unit) => <option key={unit} value={unit}>{unit}</option>)}
+                <For each={unitBases()}>
+                  {(unit, index) => {
+                      return <option value={unit}>{unit}</option>
+                    }
+                  }
+                </For>
             </select>
+            &nbsp;
+            {/* button to swap convert to and from */}
+            <button className="narrow-button"
+              onClick={(e) => {
+                let from=convertFrom()
+                let to=convertTo()
+                setConvertFrom(to)
+                setConvertTo(from)
+                handleChange()
+                console.log(convertFrom(), convertTo())
+              }}>
+              Swap
+            </button>
         </div>
         <br />
+
         <div className="conversion-div">
             <input 
                 id="main-input" 
                 name='inputValue'
                 type='text'
                 autoComplete='off'
-                placeholder="Enter a number..."   //redo convert each time the input changes
-                onInput={(e) => {setInputValue(e.target.value); handleChange()}}
+                placeholder="Enter a number..."
+                onInput={(e) => {setInputValue(e.currentTarget.value); handleChange()}}
             />  
             <h2>{outputValue()}</h2>
         </div>
