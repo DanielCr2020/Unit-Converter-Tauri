@@ -1,7 +1,7 @@
 //This component has the input text box and the ouput text result. It imvokes the backend rust function
 import '../App.css';
 import { createSignal } from 'solid-js';
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 
 const InputAndConvert = (props) => {
     const [outputValue, setOutputValue] = createSignal(0.0)

@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 // import NotFound from './components/NotFound'
 // import InputAndConvert from "./components/InputAndConvert";
 // import { Routes, Route, Router } from "@solidjs/router";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 function App() {
